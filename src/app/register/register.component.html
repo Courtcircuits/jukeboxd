@@ -1,0 +1,29 @@
+<div class="pt-24">
+  <form class="flex flex-col w-full items-center gap-6">
+    <h2 class="text-6xl pb-6">Login</h2>
+    <div class="flex flex-col gap-3">
+      <span>
+        <label class="text-tint500">Email</label>
+        <app-text-input
+          [type]="'text'"
+          [name]="'login'"
+          [placeholder]="'Type your username or email'"
+        />
+      </span>
+      <span>
+        <label class="text-tint500">Password</label>
+        <app-text-input
+          [type]="'password'"
+          [name]="'password'"
+          [placeholder]="'Type your password'"
+        />
+      </span>
+      <app-button
+        [text]="'Continue to jukeboxd'"
+        [type]="'primary'"
+        [icon]="'arrow-right'"
+        class="w-full py-3"
+      ></app-button>
+    </div>
+  </form>
+</div>
