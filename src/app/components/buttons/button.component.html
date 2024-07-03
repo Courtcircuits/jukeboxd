@@ -1,24 +1,25 @@
 @if (type === "primary") {
-  <button
-    class="border-1 flex w-full border-tint300 text-tint700 hover:bg-tint200 stroke-tint700 rounded-sm transition-colors ease-linear duration-100 py-2 undefined items-center justify-center gap-2"
-  >
-    {{ text }}
-    @if (icon !== "") {
-      <lucide-icon [name]="icon"></lucide-icon>
-    }
-  </button>
+<button
+  class="border-1 flex w-full border-tint300 text-tint700 hover:bg-tint200 stroke-tint700 rounded-sm transition-colors ease-linear duration-100 py-2 undefined items-center justify-center gap-2"
+  (click)="handleClick()"
+>
+  {{ text }}
+  @if (icon !== "") {
+  <lucide-icon [name]="icon"></lucide-icon>
+  }
+</button>
 } @else if (type === "secondary") {
-  <button class="bg-google">
-    @if (icon !== "") {
-      <lucide-icon name="{{ icon }}"></lucide-icon>
-    }
-    {{ text }}
-  </button>
+<button class="bg-google" (click)="handleClick">
+  @if (icon !== "") {
+  <lucide-icon name="{{ icon }}"></lucide-icon>
+  }
+  {{ text }}
+</button>
 } @else if (type === "danger") {
-  <button class="bg-red">
-    @if (icon !== "") {
-      <lucide-icon name="{{ icon }}"></lucide-icon>
-    }
-    {{ text }}
-  </button>
+<button class="bg-red" (click)="handleClick">
+  @if (icon !== "") {
+  <lucide-icon name="{{ icon }}"></lucide-icon>
+  }
+  {{ text }}
+</button>
 }

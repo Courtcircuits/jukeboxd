@@ -5,15 +5,12 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
-import {
-  LucideAngularModule,
-  Home,
-  ArrowRight,
-  Disc3,
-  icons,
-} from 'lucide-angular';
+import { LucideAngularModule, icons } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore(),
     importProvidersFrom(LucideAngularModule.pick(icons)),
+    provideAnimations(),
+    provideToastr(),
   ],
 };

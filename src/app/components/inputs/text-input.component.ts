@@ -9,4 +9,5 @@ export class TextInputComponent {
   @Input() name = '';
   @Input() placeholder = '';
   @Input() type = 'text';
+  @Input() formControl = null;
 }

@@ -23,6 +23,8 @@ export default {
       tint0: "#fff",
       tintOpac0: "rgba(255, 255, 255, 0.3)",
       primary: "#FC7753",
+      secondary: "rgb(255 238 233)",
+      transparent: "transparent",
     },
     extend: {
       borderRadius: {

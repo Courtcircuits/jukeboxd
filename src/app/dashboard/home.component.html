@@ -1,0 +1,45 @@
+<section class="py-3">
+  <span class="flex flex-row justify-between align-center">
+    <div
+      class="flex flex-row gap-2 items-center justify-center w-fit bg-tint100 border-tint400 border-1 px-2 py-1 rounded-full active:outline-primary active:outline-1"
+    >
+      <lucide-angular
+        name="search"
+        size="20"
+        class="primary"
+        color="#94a3b8"
+      ></lucide-angular>
+      <input
+        type="text"
+        class="text-tint400 outline-none bg-transparent"
+        placeholder="Search"
+      />
+    </div>
+    <button
+      class="border-primary rounded-full border-2 px-2 text-primary bg-secondary hover:text-secondary hover:bg-primary transition-all duration-75 ease-in-out"
+    >
+      Add a music
+    </button>
+  </span>
+  <section class="py-3 gap-3 flex flex-row">
+    @for (genre of genres; track genre) {
+      @if (genre.selected) {
+        <div
+          (click)="select(genre.name)"
+          class="border-tint400 border-1 px-2 py-1 rounded-full w-fit hover:bg-tint200 bg-tint100o hover:cursor-pointer"
+        >
+          <p class="text-tint400 hover:cursor-pointer">{{ genre.name }}</p>
+        </div>
+      } @else {
+        <div
+          (click)="select(genre.name)"
+          class="border-tint400 border-1 px-2 py-1 rounded-full w-fit hover:bg-tint200 bg-tint400 group hover:cursor-pointer"
+        >
+          <p class="text-tint100 group-hover:text-tint400 hover:cursor-pointer">
+            {{ genre.name }}
+          </p>
+        </div>
+      }
+    }
+  </section>
+</section>

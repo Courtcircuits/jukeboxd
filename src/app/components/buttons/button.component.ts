@@ -12,4 +12,9 @@ export class ButtonComponent {
   @Input() text = '';
   @Input() type: ButtonType = 'primary';
   @Input() icon = '';
+  @Input() onClick = () => {};
+
+  handleClick() {
+    this.onClick();
+  }
 }
