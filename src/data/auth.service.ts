@@ -3,13 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import PocketBase from 'pocketbase';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { login, logout } from '../states/authentication.actions';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://127.0.0.1:8090/api/';
   private sdkUrl = 'http://127.0.0.1:8090';
+  private isLoggedIn = false;
 
   constructor(
     private http: HttpClient,
@@ -20,6 +23,7 @@ export class AuthService {
     if (authData) {
       const pb = new PocketBase(this.sdkUrl);
       pb.authStore = JSON.parse(authData);
+      this.isLoggedIn = true;
     }
   }
 
@@ -45,12 +49,17 @@ export class AuthService {
     console.log('Logged in', pb.authStore);
 
     localStorage.setItem('authData', JSON.stringify(pb.authStore));
-
+    this.isLoggedIn = true;
     this.router.navigate(['/home']);
   }
 
   logout(): void {
     localStorage.removeItem('authData');
+    this.isLoggedIn = false;
     this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedIn;
   }
 }

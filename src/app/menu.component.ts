@@ -11,18 +11,13 @@ import { AuthService } from '../data/auth.service';
   styleUrl: `./menu.component.scss`,
 })
 export class MenuComponent {
-  isConnected = false;
-  constructor(private authService: AuthService) {
-    effect(() => {
-      this.isConnected = this.authService.isLoggedIn();
-    });
-  }
-
-  isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
+  constructor(private authService: AuthService) {}
 
   logout() {
     this.authService.logout();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isAuthenticated();
   }
 }

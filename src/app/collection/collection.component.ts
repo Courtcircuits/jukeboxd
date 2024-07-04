@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Pipe, PipeTransform } from '@angular/core';
 import {
   Music,
   MusicService,
@@ -7,11 +7,20 @@ import {
 import { Observable } from 'rxjs';
 import { MusicCardComponent } from '../components/music-card/music-card.component';
 
+@Pipe({
+  name: 'defined',
+  standalone: true,
+})
+export class DefinedPipe implements PipeTransform {
+  transform(val: string | undefined): string {
+    return val || '';
+  }
+}
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   standalone: true,
-  imports: [MusicCardComponent],
+  imports: [MusicCardComponent, DefinedPipe],
 })
 export class CollectionComponent {
   observableMusics: Observable<ResponseCollection>;
@@ -20,6 +29,7 @@ export class CollectionComponent {
     this.observableMusics = this.musicService.getCollection();
     this.observableMusics.subscribe((musics) => {
       this.musics = musics.items.map((music) => {
+        console.log(music.id);
         return {
           title: music.title,
           artist: music.artist,
@@ -27,6 +37,7 @@ export class CollectionComponent {
           cover: music.cover,
           spotify_link: music.spotify_link,
           preview: music.preview,
+          id: music.id || '',
         };
       });
     });

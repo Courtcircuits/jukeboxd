@@ -51,6 +51,7 @@ export interface Music {
   album: string;
   preview: string;
   spotify_link: string;
+  creator?: string;
 }
 
 @Injectable({
@@ -153,5 +154,11 @@ export class MusicService {
           },
         });
     });
+  }
+
+  getMusic(id: string): Observable<Music> {
+    return this.http.get<Music>(
+      `${this.apiUrl}collections/music/records/${id}`,
+    );
   }
 }
