@@ -21,7 +21,6 @@ import { AuthService } from '../../data/auth.service';
     ButtonComponent,
     ReactiveFormsModule,
     LucideAngularModule,
-    HttpClientModule,
   ],
   styleUrls: ['../login/login.component.scss'],
 })

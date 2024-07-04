@@ -11,6 +11,7 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
 import { LucideAngularModule, icons } from 'lucide-angular';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +21,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(LucideAngularModule.pick(icons)),
     provideAnimations(),
     provideToastr(),
+    provideHttpClient(),
   ],
 };

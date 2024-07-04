@@ -12,13 +12,24 @@
       </span>
     </li>
     <li>
-      <a
-        routerLink="/register"
-        class="hover:text-primary"
-        routerLinkActive="active"
-        >sign up</a
-      >
-      <a routerLink="/login" routerLinkActive="active">log in</a>
+      @if (!isConnected) {
+        <a
+          routerLink="/register"
+          class="hover:text-primary"
+          routerLinkActive="active"
+          >sign up</a
+        >
+        <a routerLink="/login" routerLinkActive="active">log in</a>
+      } @else {
+        <a
+          routerLink="/home"
+          class="hover:text-primary"
+          routerLinkActive="active"
+          >home</a
+        >
+        <a routerLink="/collection" routerLinkActive="active">collection</a>
+        <button (click)="logout()">log out</button>
+      }
     </li>
   </ul>
 </nav>

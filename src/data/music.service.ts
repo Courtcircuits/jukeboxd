@@ -1,8 +1,23 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PenBox } from 'lucide-angular';
 import PocketBase, { ListResult, RecordModel } from 'pocketbase';
 import { Observable } from 'rxjs';
+
+export interface ResponseCollection {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  items: Item[];
+}
+
+export interface Item extends Music {
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+}
 
 export interface Root {
   baseToken: string;
@@ -29,9 +44,10 @@ export interface BaseModel {
 export interface StorageFallback {}
 
 export interface Music {
+  id?: string;
   title: string;
   artist: string;
-  picture: string;
+  cover: string;
   album: string;
   preview: string;
   spotify_link: string;
@@ -103,9 +119,39 @@ export class MusicService {
     });
   }
 
-  async getMusic(): Promise<ListResult<RecordModel>> {
-    const pb = new PocketBase(this.sdkUrl);
-    const records = await pb.collection('music').getList();
-    return records;
+  getCollection(): Observable<ResponseCollection> {
+    console.log('Getting collection...');
+    let authData = localStorage.getItem('authData');
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    let authContent = JSON.parse(authData) as Root;
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    const filter = `?filter=(creator='${authContent.baseModel.id}')`;
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authContent.baseToken}`,
+    });
+    return this.http.get<ResponseCollection>(
+      `${this.apiUrl}collections/music/records${filter}`,
+      { headers: httpHeaders },
+    );
+  }
+
+  deleteItem(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .delete<void>(`${this.apiUrl}collections/music/records/${id}`)
+        .subscribe({
+          next: () => {
+            resolve();
+          },
+          error: (error) => {
+            reject(error);
+          },
+        });
+    });
   }
 }

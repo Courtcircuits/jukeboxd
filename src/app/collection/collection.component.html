@@ -1,0 +1,13 @@
+<h1 class="text-3xl font-semibold pt-4">My Collection</h1>
+<ul class="flex flex-row gap-8 py-4">
+  @for (music of musics; track music) {
+    <li>
+      <app-music-card
+        [cover]="music.cover"
+        [title]="music.title"
+        [artist]="music.artist"
+        [album]="music.album"
+      />
+    </li>
+  }
+</ul>
