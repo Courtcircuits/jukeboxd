@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PenBox } from 'lucide-angular';
 import PocketBase, { ListResult, RecordModel } from 'pocketbase';
@@ -43,24 +43,28 @@ export interface Music {
 export class MusicService {
   private apiUrl = 'http://127.0.0.1:8090/api/';
   private sdkUrl = 'http://127.0.0.1:8090';
-  private backendUrl = 'http://localhost:8080/api/';
+  private backendUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
   async postMusic(
-    name: string,
+    title: string,
     artist: string,
     album: string,
+    cover: string,
+    preview: string,
   ): Promise<RecordModel> {
     const pb = new PocketBase(this.sdkUrl);
-    console.log('Posting music...', name);
+    console.log('Posting music...', title);
     if (!pb.authStore.model) {
       throw new Error('Not authenticated');
     }
     const record = await pb.collection('music').create({
-      title: name,
+      title: title,
       artist,
       album,
+      cover,
+      preview,
       creator: pb.authStore.model['id'] || '',
     });
     return record;
@@ -74,10 +78,8 @@ export class MusicService {
     await pb.collection('music').delete(id);
   }
 
-  async searchMusic(
-    name: string,
-    artist: string,
-  ): Promise<Observable<Music[]>> {
+  searchMusic(name: string, artist: string): Observable<Music[]> {
+    console.log('Searching for music...', name, artist);
     let authData = localStorage.getItem('authData');
     if (!authData) {
       throw new Error('Not authenticated');
@@ -90,12 +92,14 @@ export class MusicService {
     if (!id) {
       throw new Error('Not authenticated');
     }
-    return this.http.get<Music[]>(`${this.backendUrl}music/search`, {
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${id}`,
+    });
+
+    return this.http.get<Music[]>(`${this.backendUrl}/search`, {
       params: { name, artist },
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${id}`,
-      },
+      headers: httpHeaders,
     });
   }
 

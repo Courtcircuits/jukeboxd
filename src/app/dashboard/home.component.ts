@@ -3,6 +3,7 @@ import { MenuComponent } from '../menu.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LucideAngularModule } from 'lucide-angular';
+import { CreateMusicFormComponent } from '../components/create-music-form/create-music-form.component';
 
 interface Genre {
   name: string;
@@ -19,6 +20,7 @@ interface Genre {
     ReactiveFormsModule,
     HttpClientModule,
     LucideAngularModule,
+    CreateMusicFormComponent,
   ],
 })
 export class HomeComponent {
