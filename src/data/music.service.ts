@@ -1,6 +1,5 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PenBox } from 'lucide-angular';
 import PocketBase, { ListResult, RecordModel } from 'pocketbase';
 import { Observable } from 'rxjs';
 
@@ -9,14 +8,14 @@ export interface ResponseCollection {
   perPage: number;
   totalItems: number;
   totalPages: number;
-  items: Item[];
+  items: Music[];
 }
 
-export interface Item extends Music {
-  collectionId: string;
-  collectionName: string;
-  created: string;
-  updated: string;
+export interface Item {
+  collectionId?: string;
+  collectionName?: string;
+  created?: string;
+  updated?: string;
 }
 
 export interface Root {
@@ -43,7 +42,7 @@ export interface BaseModel {
 
 export interface StorageFallback {}
 
-export interface Music {
+export interface Music extends Item {
   id?: string;
   title: string;
   artist: string;
@@ -137,6 +136,46 @@ export class MusicService {
     });
     return this.http.get<ResponseCollection>(
       `${this.apiUrl}collections/music/records${filter}`,
+      { headers: httpHeaders },
+    );
+  }
+
+  searchMusics(query: string): Observable<ResponseCollection> {
+    console.log('Searching music...', query);
+    let authData = localStorage.getItem('authData');
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    let authContent = JSON.parse(authData) as Root;
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authContent.baseToken}`,
+    });
+    return this.http.get<ResponseCollection>(
+      `${this.apiUrl}collections/music/records?filter=(title~'${query}')`,
+      { headers: httpHeaders },
+    );
+  }
+
+  getMusics(): Observable<ResponseCollection> {
+    console.log('Getting music...');
+    let authData = localStorage.getItem('authData');
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    let authContent = JSON.parse(authData) as Root;
+    if (!authData) {
+      throw new Error('Not authenticated');
+    }
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authContent.baseToken}`,
+    });
+    return this.http.get<ResponseCollection>(
+      `${this.apiUrl}collections/music/records`,
       { headers: httpHeaders },
     );
   }

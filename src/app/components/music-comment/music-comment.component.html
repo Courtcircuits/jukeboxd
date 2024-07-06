@@ -1,0 +1,47 @@
+<li class="flex flex-row gap-3 py-5 border-tint300 border-b-1">
+  <div class="flex-grow">
+    <span class="flex flex-row gap-2">
+      <p class="text-xs">{{ dataCreator | defined }}</p>
+      @if (creator == musicCreator) {
+        <p class="text-xs bg-primary text-tint50 rounded-full px-1">Creator</p>
+      }
+    </span>
+    @if (editing) {
+      <input
+        type="textarea"
+        class="w-full p-2"
+        [formControl]="contentControl"
+      />
+      <button
+        class="w-fit py-2 px-4 bg-primary text-secondary rounded-md"
+        (click)="editPost(postId)"
+      >
+        Edit
+      </button>
+    } @else {
+      <p>{{ content }}</p>
+    }
+  </div>
+  @if (creator == myId) {
+    <button
+      class="group hover:bg-secondary px-2 rounded-md"
+      (click)="toggleEdit()"
+    >
+      <lucide-angular
+        name="pen"
+        size="20"
+        class="primary opacity-70 group-hover:opacity-100"
+      />
+    </button>
+    <button
+      class="group hover:bg-secondary px-2 rounded-md"
+      (click)="deletePost(postId)"
+    >
+      <lucide-angular
+        name="trash"
+        size="20"
+        class="primary opacity-70 group-hover:opacity-100"
+      />
+    </button>
+  }
+</li>

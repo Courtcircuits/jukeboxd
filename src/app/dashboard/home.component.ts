@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuComponent } from '../menu.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LucideAngularModule } from 'lucide-angular';
 import { CreateMusicFormComponent } from '../components/create-music-form/create-music-form.component';
+import { Music, MusicService } from '../../data/music.service';
+import { MusicCardComponent } from '../components/music-card/music-card.component';
+import { DefinedPipe } from '../collection/collection.component';
 
 interface Genre {
   name: string;
@@ -19,11 +22,14 @@ interface Genre {
     MenuComponent,
     ReactiveFormsModule,
     HttpClientModule,
+    DefinedPipe,
+    MusicCardComponent,
     LucideAngularModule,
     CreateMusicFormComponent,
   ],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  musics: Music[] = [];
   genres: Genre[] = [
     {
       name: 'Rock',
@@ -34,6 +40,33 @@ export class HomeComponent {
       selected: true,
     },
   ];
+  queryControl = new FormControl('');
+
+  showForm = false;
+
+  constructor(private musicService: MusicService) {}
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+
+  ngOnInit() {
+    this.getMusics();
+  }
+
+  getMusics() {
+    this.musicService.getMusics().subscribe((musics) => {
+      this.musics = musics.items;
+    });
+  }
+
+  searchMusics() {
+    this.musicService
+      .searchMusics(this.queryControl.value || '')
+      .subscribe((musics) => {
+        this.musics = musics.items;
+      });
+  }
 
   select(name: string) {
     this.genres = this.genres.map((genre) => {
